@@ -1,16 +1,1 @@
-[
-  {
-    "employee_id":"id1",
-    "employee_name":"unnimaya",
-    "age":22,
-    "salary":2000.0,
-    "city": "banglore"
-  },
-  {
-    "employee_id":"id2",
-    "employee_name":"sandra",
-    "age":22,
-    "salary":2500.0,
-    "city": "pune"
-  }
-]
+[{"employee_id":"id1","employee_name":"unnimaya","age":22,"salary":2000.0,"city":"banglore"},{"employee_id":"id2","employee_name":"sandra","age":22,"salary":2500.0,"city":"delhi"}]

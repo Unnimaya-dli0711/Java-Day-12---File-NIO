@@ -1,12 +1,15 @@
 package practical;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 class Employee{
     String employee_id;
@@ -70,15 +73,56 @@ class Employee{
 }
 public class EmployeeExample {
     static List<Employee> employeeArrayList=new ArrayList<>();
-    public static void main(String[] args) {
-        //json to object
+    static void updateField(){
+        System.out.println("Enter the employee_id to update city");
+        Scanner scanner=new Scanner(System.in);
+        String update_id=scanner.next();
+        System.out.println("Enter new city");
+        String new_city=scanner.next();
+        for(Employee employee:employeeArrayList){
+            if(employee.getEmployee_id().equals(update_id)){
+                employee.setCity(new_city);
+                objectArrayToJson();
+            }
+        }
+        System.out.println("Updated");
+    }
+    static void objectArrayToJson(){
+        Gson gson=new Gson();
+        Employee[] updated=employeeArrayList.toArray(new Employee[0]);
+        try(FileWriter fileWriter=new FileWriter("src/main/java/practical/test.json");){
+            gson.toJson(updated,fileWriter);
+        }catch (IOException e){
+            System.out.println(e);
+        }
+    }
+    static void jsonToObjectArray(){
         Gson gson=new Gson();
         try(FileReader fileReader=new FileReader("src/main/java/practical/test.json")){
             Employee[] employees=gson.fromJson(fileReader, Employee[].class);
+            for(int i=0;i<employees.length;i++){
+                String jsonemployee=gson.toJson(employees[i]);
+                if(!isValidJson(jsonemployee)){
+                    System.out.println("invalid format");
+                    continue;
+                }
+            }
             employeeArrayList=Arrays.stream(employees).toList();
             System.out.println(employeeArrayList);
         }catch (IOException e){
             System.out.println(e);
         }
+    }
+    public static boolean isValidJson(String json) {
+        try {
+            new Gson().fromJson(json, Object.class);
+            return true;
+        } catch (JsonSyntaxException ex) {
+            return false;
+        }
+    }
+    public static void main(String[] args) {
+        jsonToObjectArray();
+        updateField();
     }
 }
